@@ -1,0 +1,44 @@
+ <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Price Tracker</title>
+        <style>
+            /* Styling */
+            body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; }
+            h1 { text-align: center; margin-top: 50px; color: #4CAF50; }
+            .container { max-width: 600px; margin: auto; padding: 20px; background-color: #fff; }
+            form { display: flex; flex-direction: column; gap: 15px; }
+            input, button { padding: 10px; font-size: 16px; border-radius: 5px; }
+            button { background-color: #4CAF50; color: white; cursor: pointer; }
+        </style>
+    </head>
+    <body>
+        <h1>Price Tracker</h1>
+        <div class="container">
+            <form id="priceForm">
+                <input type="text" id="url" placeholder="Enter product URL" required>
+                <input type="number" id="target_price" placeholder="Enter target price" required>
+                <input type="email" id="email" placeholder="Enter your email" required>
+                <button type="submit">Track Price</button>
+            </form>
+            <div id="response"></div>
+        </div>
+        <script>
+            document.getElementById('priceForm').onsubmit = async function(event) {
+                event.preventDefault();
+                const url = document.getElementById('url').value;
+                const targetPrice = document.getElementById('target_price').value;
+                const email = document.getElementById('email').value;
+                const response = await fetch('/track', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url, target_price: targetPrice, email })
+                });
+                const result = await response.json();
+                document.getElementById('response').innerText = result.message;
+            }
+        </script>
+    </body>
+    </html>
